@@ -1,0 +1,28 @@
+services:
+  user-database:
+    image: postgres:16
+    container_name: accountservice-database
+    environment:
+      POSTGRES_DB: account_service
+      POSTGRES_USER: account_service
+      POSTGRES_PASSWORD: AccountService@2k26
+      TZ: Asia/Phnom_Penh
+    ports:
+      - "5634:5432"
+    networks:
+      - ravuth-dev-net
+    volumes:
+      - accountservice_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U account_service -d account_service"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+volumes:
+  accountservice_pg_data:
+
+networks:
+  ravuth-dev-net:
+    external: true

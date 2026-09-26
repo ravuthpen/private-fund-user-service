@@ -1,0 +1,97 @@
+server:
+  port: ${SERVER_PORT:4046}
+
+spring:
+  application:
+    name: ${SPRING_APPLICATION_NAME:accountservice}
+  # Reactive connection runtime (R2DBC)
+  r2dbc:
+    url: ${SPRING_R2DBC_URL:r2dbc:postgresql://localhost:5634/account_service}
+    username: ${SPRING_R2DBC_USERNAME:account_service}
+    password: ${SPRING_R2DBC_PASSWORD:AccountService@2k26}
+
+  # Liquibase startup connection (JDBC)
+  datasource:
+    url: ${SPRING_JDBC_URL:jdbc:postgresql://localhost:5634/account_service}
+    username: ${SPRING_JDBC_USERNAME:account_service}
+    password: ${SPRING_JDBC_PASSWORD:AccountService@2k26}
+
+  liquibase:
+    enabled: ${LIQUIBASE_ENABLED:true}
+    change-log: ${LIQUIBASE_CHANGELOG:classpath:db/changelog/db.changelog-master.yaml}
+
+  # ======== Config Server =======
+#  profiles:
+#    active: ${SPRING_PROFILES_ACTIVE:dev}
+#
+#  config:
+#    import: ${SPRING_CONFIG_IMPORT:configserver:http://localhost:8071}
+
+#  cloud:
+#    config:
+#      uri: ${SPRING_CLOUD_CONFIG_URI:http://localhost:8071}
+
+# ====== Eureka Register  =======
+#eureka:
+#  instance:
+#    preferIpAddress: true
+#  client:
+#    registerWithEureka: true
+#    fetchRegistry: true
+#    serviceUrl:
+#      defaultZone: ${EUREKA_INSTANCE_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:9000/eureka/}
+
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#  info:
+#    env:
+#      enabled: true
+#
+#secret-key:
+#  expire-minutes: ${EXPIRES_MINUTES:7776000} #7776000: 3 mount
+
+#info:
+#  app:
+#    name: Fund Server Owner Account
+#    description:  private fund server
+#    version: 1.0.0
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${SECURITY_OAUTH2_RESOURCESERVER_JWT:http://localhost:9090/realms/fund-system}
+keycloak:
+  base-url: ${KEYCLOAK_BASE_URL:http://localhost:9090}
+  realm: ${KEYCLOAK_REALM:fund-system}
+  admin:
+    client-id: ${KEYCLOAK_ADMIN_CLIENT_ID:user-service}
+    client-secret: ${KEYCLOAK_ADMIN_CLIENT_SECRET:EVYRrKoO0ZsurJJooYo9gJqLdStNzX8R}
+  client:
+    client-id: ${KEYCLOAK_LOGIN_CLIENT_ID:user-login}
+    client-secret: ${KEYCLOAK_LOGIN_CLIENT_SECRET:pck3a72RnZNfbRQ0e2mdMPehS2Vexg5o}
+
+# -------------------------
+# MinIO Storage media
+# -------------------------
+storage:
+  minio:
+    endpoint: ${STRORAGE_MINIO_ENDPOINT:http://localhost:9002}
+    accessKey: ${STRORAGE_MINIO_ACCESSKEY:minioadmin}
+    secretKey: ${STRORAGE_MINIO_SECRETKEY:minioadmin}
+    bucket: ${STRORAGE_MINIO_BUCKET:user-media}
+    publicBaseUrl: ${STRORAGE_MINIO_PUBLICBASEURL:http://localhost:9002}
+    maxFilesPerUser: ${STRORAGE_MINIO_MAXFILEPERUSER:5}
+    maxFilesSizeBytes: ${STRORAGE_MINIO_MAXFILESSIZEBYTES:5000000}
+
+logging:
+  level:
+    root: ${LOG_LEVEL_ROOT:INFO}
+    com.fund.server.accountservice: ${LOG_LEVEL_APP:INFO}
+    com.fund.server.owneraccount.exception: ${LOG_LEVEL_EXCEPTION:DEBUG}
+    liquibase: ${LOG_LEVEL_LIQUIBASE:INFO}
+    org.springframework.boot.autoconfigure.liquibase: ${LOG_LEVEL_LIQUIBASE_AUTO:INFO}
+    io.netty.resolver.dns.DnsServerAddressStreamProviders: ${LOG_LEVEL_DNS_SERVER_ADDRESS_STREAM_RPOVIDERS:OFF}
+

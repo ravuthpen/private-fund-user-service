@@ -1,0 +1,87 @@
+databaseChangeLog:
+
+   - changeSet:
+      id: 001-create-user-account-table
+      author: ravuthpen
+
+      changes:
+
+        - createTable:
+            tableName: user_account
+
+            columns:
+
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid()
+
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: keycloak_user_id
+                  type: varchar(30)
+
+              - column:
+                  name: country_code
+                  type: varchar(10)
+
+              - column:
+                  name: phone_number
+                  type: varchar(30)
+
+              - column:
+                  name: referral_code
+                  type: varchar(30)
+
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: user_status
+                  type: varchar(30)
+
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: user_type
+                  type: varchar(30)
+
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: created_at
+                  type: timestamptz
+
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: updated_at
+                  type: timestamptz
+
+                  constraints:
+                    nullable: false
+
+        - addUniqueConstraint:
+            tableName: user_account
+            columnNames: keycloak_user_id
+            constrainName: uk_user_account_keycloak_user_id
+
+        - createIndex:
+            tableName: user_account
+            indexName: idx_user_account_phone
+
+            columns:
+              - column:
+                  name: country_code
+
+              - column:
+                  name: phone_number
+
+
+

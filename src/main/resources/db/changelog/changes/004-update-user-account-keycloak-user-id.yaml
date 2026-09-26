@@ -1,0 +1,11 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 004-update-user-account-keycloak-user-id
+      author: ravuthpen
+
+      changes:
+        - modifyDataType:
+            tableName: user_account
+            columnName: keycloak_user_id
+            newDataType: varchar(100)

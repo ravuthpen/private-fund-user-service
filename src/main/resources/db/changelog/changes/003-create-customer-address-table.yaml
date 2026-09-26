@@ -1,0 +1,86 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 003-create-customer-address-table
+      author: ravuthpen
+
+      changes:
+        - createTable:
+            tableName: customer_address
+
+            columns:
+
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid()
+
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: customer_profile_id
+                  type: uuid
+
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: province_code
+                  type: varchar(10)
+
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: district_code
+                  type: varchar(10)
+
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: commune_code
+                  type: varchar(10)
+
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: village_code
+                  type: varchar(10)
+
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: line_1
+                  type: varchar(255)
+
+              - column:
+                  name: created_at
+                  type: timestamptz
+
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: updated_at
+                  type: timestamptz
+
+                  constraints:
+                    nullable: false
+
+
+        - addForeignKeyConstraint:
+            baseTableName: customer_address
+            baseColumnNames: customer_profile_id
+            referencedTableName: customer_profile
+            referencedColumnNames: id
+            constraintName: fk_customer_address_customer_profile_id
+
+        - addUniqueConstraint:
+            tableName: customer_address
+            columnNames: customer_profile_id
+            constraintName: uk_customer_address_profile_id

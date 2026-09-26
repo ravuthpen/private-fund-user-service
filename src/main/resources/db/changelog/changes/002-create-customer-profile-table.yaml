@@ -1,0 +1,105 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 002-create-customer-profile-table
+      author: ravuthpen
+
+      changes:
+
+        - createTable:
+            tableName: customer_profile
+
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid()
+
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: user_account_id
+                  type: uuid
+
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: first_name
+                  type: varchar(100)
+
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: last_name
+                  type: varchar(100)
+
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: gender
+                  type: varchar(20)
+
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: date_of_birth
+                  type: date
+
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: nationality_number
+                  type: varchar(30)
+
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: passport_number
+                  type: varchar(30)
+
+              - column:
+                  name: email
+                  type: varchar(255)
+
+              - column:
+                  name: photo_profile
+                  type: varchar(500)
+
+              - column:
+                  name: photo_object_key
+                  type: varchar(500)
+
+              - column:
+                  name: created_at
+                  type: timestamptz
+
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: updated_at
+                  type: timestamptz
+
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: customer_profile
+            baseColumnNames: user_account_id
+            referencedTableName: user_account
+            referencedColumnNames: id
+            constraintName: fk_customer_profile_user_account
+
+        - addUniqueConstraint:
+            tableName: customer_profile
+            columnNames: user_account_id
+            constraintName: uk_customer_profile_user_account
+
